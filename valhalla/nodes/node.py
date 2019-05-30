@@ -1,5 +1,4 @@
 import pyglet
-from pprint import pprint
 
 
 class VisualNode:
@@ -23,14 +22,16 @@ class VisualNode:
     def __init__(self, batch):
         self.name = "defaultName"
         self._batch = batch
-        self._vertex_list = self._batch.add(6, pyglet.gl.GL_QUAD_STRIP, None,
-                                            ('v2f', (self.x, self.y,
-                                                     self.x, self.y,
-                                                     self.x, self.y + self.height,
-                                                     self.x + self.width, self.y,
-                                                     self.x + self.width, self.y + self.height,
-                                                     self.x + self.width, self.y + self.height)),
-                                            ('c4B', self._base_color*6))
+        self._vertex_list = self._batch.add(
+            6, pyglet.gl.GL_QUAD_STRIP, None,
+            ('v2f', (self.x, self.y,
+                     self.x, self.y,
+                     self.x, self.y + self.height,
+                     self.x + self.width, self.y,
+                     self.x + self.width, self.y + self.height,
+                     self.x + self.width, self.y + self.height)),
+            ('c4B', self._base_color*6))
+
         self._label_x = (self.x + self.width) / 2
         self._label_y = self.y + self.height - 10
 
@@ -38,7 +39,8 @@ class VisualNode:
                                         font_name='Times New Roman',
                                         font_size=9,
                                         x=self._label_x, y=self._label_y,
-                                        anchor_x='center', anchor_y='center', batch=self._batch)
+                                        anchor_x='center', anchor_y='center',
+                                        batch=self._batch)
 
     def draw(self):
 
@@ -96,4 +98,3 @@ class VisualNode:
 
     def _draw_ports(self):
         pass
-

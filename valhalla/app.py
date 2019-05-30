@@ -1,8 +1,10 @@
-from abc import ABC
-
 from .nodes.node import VisualNode
-from pyglet.gl import *
-
+from pyglet.gl import (glBlendFunc,
+                       glEnable,
+                       GL_SRC_ALPHA,
+                       GL_ONE_MINUS_SRC_ALPHA,
+                       GL_BLEND)
+import pyglet
 
 
 class ValhallaWindow(pyglet.window.Window):
@@ -43,10 +45,10 @@ class ValhallaWindow(pyglet.window.Window):
 
 
 def run():
-    print('running')
+    print('>>> running')
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
     glEnable(GL_BLEND)
-    window = ValhallaWindow(1280, 720, resizable=True)
+    ValhallaWindow(1280, 720, resizable=True)
     pyglet.app.run()
 
     # window.push_handlers(o)
