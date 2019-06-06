@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<valhalla:type xmlns:valhalla="http://www.valhalla.site/types">
+    <valhalla:name>float</valhalla:name>
+    <valhalla:description>Single float number</valhalla:description>
+    <valhalla:map>float</valhalla:map>
+    <valhalla:color>#69e04e</valhalla:color>
+</valhalla:type>

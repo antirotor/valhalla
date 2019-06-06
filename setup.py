@@ -42,5 +42,21 @@ setup(name='valhalla',
       classifiers=classifiers,
       entry_points={
         "console_scripts": ["valhalla = valhalla.app:main"]
+      },
+      install_requires=[
+          "pyglet",
+          "glooey",
+          "autoprop"
+      ],
+      extra_require={
+          'dev': [
+              'flake8>=3.5',
+              'coverage>=4.5',
+              'pytest>=4.3',
+              'pytest-cov>=2.6.1',
+              'pytest-print>=0.1',
+              'Spinx>=1.8',
+              'Sphinx-rtd-theme>=0.4'
+          ]
       }
       )

@@ -1,54 +1,28 @@
-from .nodes.node import VisualNode
-from pyglet.gl import (glBlendFunc,
-                       glEnable,
-                       GL_SRC_ALPHA,
-                       GL_ONE_MINUS_SRC_ALPHA,
-                       GL_BLEND)
+from .nodes.default_node import DefaultNode
+from .nodes.test_node import TestNode
+
 import pyglet
+import glooey
 
-
-class ValhallaWindow(pyglet.window.Window):
-
-    _nodes = []
-    _selected_node = None
-
-    def __init__(self, width, height, resizable):
-        super(ValhallaWindow, self).__init__(width, height, resizable)
-        self._batch = pyglet.graphics.Batch()
-        self._nodes.append(VisualNode(self._batch))
-
-    def on_mouse_press(self, x, y, button, modifiers):
-        for n in self._nodes:
-            if n.in_bounds(x, y):
-                self._selected_node = n
-                n.color([255, 128, 0, 255])
-
-    def on_mouse_release(self, x, y, button, modifiers):
-        self._selected_node.restore_color()
-        self._selected_node = None
-
-    def on_mouse_drag(self, x, y, dx, dy, buttons, modifiers):
-        if self._selected_node:
-            rx, ry = self._selected_node.get_local_coord(x, y)
-            self._selected_node.x = self._selected_node.x + dx
-            self._selected_node.y = self._selected_node.y + dy
-            self._selected_node.invalidate()
-
-    def render(self):
-        self.clear()
-        for n in self._nodes:
-            n.draw(self._batch)
-        self._batch.draw()
-
-    def on_draw(self):
-        self.render()
+from pyglet.gl import *
 
 
 def run():
     print('>>> running')
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
     glEnable(GL_BLEND)
-    ValhallaWindow(1280, 720, resizable=True)
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+    window = pyglet.window.Window()
+    pyglet.gl.glClearColor(0.2, 0.2, 0.2, 1)
+    gui = glooey.Gui(window)
+    f = DefaultNode()
+    # f.add(glooey.Placeholder(200, 200))
+
+    f.set_width_hint(200)
+    f.set_height_hint(200)
+
+    gui.add(f)
+    # f.debug_drawing_problems()
+    # f.debug_placement_problems()
     pyglet.app.run()
 
     # window.push_handlers(o)
