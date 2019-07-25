@@ -4,6 +4,7 @@ from functools import lru_cache
 import autoprop
 import os
 import uuid
+from pprint import pprint
 
 
 @autoprop
@@ -13,6 +14,18 @@ class AbstractNode(ABC):
     load port types, etc. Node can then be implemented by whatever UI libs. Creating widget node and rendering
     it is on implementing class.
     """
+    _name = "default"
+    _category = "System :: Default"
+
+    # Ports
+    _inputs = [
+        {"type": "float", "name": "float in"}
+    ]
+    _outputs = [
+        {"type": "float", "name": "float out"}
+    ]
+    _ports = {"input": [], "output": []}
+
     def __init__(self):
 
         # Metadata
@@ -71,29 +84,27 @@ class AbstractNode(ABC):
         for i in self._inputs:
             port_type = self._get_type_root(i.get("type"))
             self._ports["input"].append({"uuid": uuid.uuid4(),
-                                         "type": port_type.findall("valhalla:name", ns),
-                                         "map": port_type.findall("valhalla:map", ns),
-                                         "color": port_type.findall("valhalla:color", ns),
-                                         "description": port_type.findall("valhalla:description", ns),
+                                         "type": port_type.findall("valhalla:name", ns)[0].text,
+                                         "map": port_type.findall("valhalla:map", ns)[0].text,
+                                         "color": port_type.findall("valhalla:color", ns)[0].text,
+                                         "description": port_type.findall("valhalla:description", ns)[0].text,
                                          "connections": []})
             pass
         for o in self._outputs:
             port_type = self._get_type_root(o.get("type"))
             self._ports["output"].append({"uuid": uuid.uuid4(),
-                                          "type": port_type.findall("valhalla:name", ns),
-                                          "map": port_type.findall("valhalla:map", ns),
-                                          "color": port_type.findall("valhalla:color", ns),
-                                          "description": port_type.findall("valhalla:description", ns),
+                                          "type": port_type.findall("valhalla:name", ns)[0].text,
+                                          "map": port_type.findall("valhalla:map", ns)[0].text,
+                                          "color": port_type.findall("valhalla:color", ns)[0].text,
+                                          "description": port_type.findall("valhalla:description", ns)[0].text,
                                           "connections": []})
         pass
+        pprint(self._ports["input"])
 
     @abstractmethod
     def get_category(self):
         return self._category
 
-    @abstractmethod
-    def initialize_port_widgets(self):
-        pass
 
     @abstractmethod
     def evaluate(self):

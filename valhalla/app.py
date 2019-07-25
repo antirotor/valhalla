@@ -1,28 +1,25 @@
+import sys
+from Qt import QtGui, QtWidgets, QtCore
 from .nodes.default_node import DefaultNode
-from .nodes.test_node import TestNode
 
-import pyglet
-import glooey
 
-from pyglet.gl import *
+from pyflowgraph.graph_view import GraphView
+from pyflowgraph.graph_view_widget import GraphViewWidget
 
 
 def run():
     print('>>> running')
-    glEnable(GL_BLEND)
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
-    window = pyglet.window.Window()
-    pyglet.gl.glClearColor(0.2, 0.2, 0.2, 1)
-    gui = glooey.Gui(window)
-    f = DefaultNode()
-    # f.add(glooey.Placeholder(200, 200))
+    app = QtWidgets.QApplication(sys.argv)
 
-    f.set_width_hint(200)
-    f.set_height_hint(200)
+    widget = GraphViewWidget()
+    graph = GraphView(parent=widget)
 
-    gui.add(f)
-    # f.debug_drawing_problems()
-    # f.debug_placement_problems()
-    pyglet.app.run()
+    node1 = DefaultNode(graph, 'test1')
+    node1.set_position(-100, 0)
+    node2 = DefaultNode(graph, 'test2')
+    node2.set_position(0, 0)
 
-    # window.push_handlers(o)
+    widget.setGraphView(graph)
+    widget.show()
+
+    sys.exit(app.exec_())

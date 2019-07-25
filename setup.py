@@ -44,8 +44,7 @@ setup(name='valhalla',
         "console_scripts": ["valhalla = valhalla.app:main"]
       },
       install_requires=[
-          "pyglet",
-          "glooey",
+          'pyflowgraph @ git+https://git@github.com/antirotor/pyflowgraph'
           "autoprop"
       ],
       extra_require={
