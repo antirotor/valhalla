@@ -1,12 +1,14 @@
+from .default_node_widget import DefaultNodeWidget
 from .abstract_node import AbstractNode
-import pyglet
-import glooey
-import autoprop
-import uuid
+from pyflowgraph.port import InputPort, OutputPort, IOPort
+from Qt import QtGui, QtCore
+from pprint import pprint
 
 
-@autoprop
-class DefaultNode(AbstractNode, glooey.Frame):
+class DefaultNode(AbstractNode):
+    """
+    Default node is node from every other node should inherit.
+    """
 
     def disable_evaluation(self):
         pass
@@ -14,73 +16,37 @@ class DefaultNode(AbstractNode, glooey.Frame):
     def enable_evaluation(self):
         pass
 
-    def __init_(self):
+    def __init__(self, graph, name):
         super().__init__()
-        self._create()
+        self._graph = graph
+        self._node = DefaultNodeWidget(graph, name, self)
+        self._initialize_port_widgets()
+        self._graph.addNode(self._node)
 
-    def _create(self):
-        content_grid = glooey.Grid(num_rows=3, num_cols=3)
-        content_grid.set_row_height(0, 16)
-        content_grid.set_row_height(2, 16)
-        content_grid.set_col_width(0, 16)
-        content_grid.set_col_width(2, 16)
-
-        content_grid.pack()
-
-        content_grid.add(0, 0, glooey.Placeholder())
-        content_grid.add(0, 1, self.NodeTitle('foo'))
-        content_grid.add(0, 2, glooey.Placeholder())
-
-        content_grid.add(1, 0, glooey.Placeholder())
-        content_grid.add(1, 1, glooey.Placeholder())
-        content_grid.add(1, 2, glooey.Placeholder())
-
-        content_grid.add(2, 0, glooey.Placeholder())
-        content_grid.add(2, 1, glooey.Placeholder())
-        content_grid.add(2, 2, glooey.Placeholder())
-
-        self.add(content_grid)
+    def set_position(self, x, y):
+        self._node.setGraphPos(QtCore.QPointF(x, y))
 
     @property
     def id(self):
         return "79b4a290-ea03-436a-9518-c176081aa40e"
 
     def get_category(self):
-        pass
+        return self._category
 
-    def initialize_port_widgets(self):
-        pass
+    def _initialize_port_widgets(self):
+        for ip in self._ports["input"]:
+            color = tuple(int(ip['color'].lstrip('#')[i:i+2], 16) for i in (0, 2, 4))
+            self._node.addPort(InputPort(self._node, self._graph, ip['type'], QtGui.QColor(*color), ip['type']))
+
+        for op in self._ports["output"]:
+            color = tuple(int(op['color'].lstrip('#')[i:i + 2], 16) for i in (0, 2, 4))
+            self._node.addPort(OutputPort(self._node, self._graph, op['type'], QtGui.QColor(*color), op['type']))
 
     def evaluate(self):
         pass
 
-    def _get_layers(self, key):
-        layers = {
-            'node': 0,
-            'labels': 1,
-            'ports': 2,
-            'tags': 3
-        }
-        return pyglet.graphics.OrderedGroup(layers[key], self.group)
+    def set_color(self, color):
+        self._node.setColor(QtGui.QColor(*color))
 
-    class Decoration(glooey.Background):
-        custom_center = pyglet.resource.texture('resources/center.png')
-        custom_top = pyglet.resource.texture('resources/top.png')
-        custom_bottom = pyglet.resource.texture('resources/bottom.png')
-        custom_left = pyglet.resource.texture('resources/left.png')
-        custom_right = pyglet.resource.texture('resources/right.png')
-        custom_top_left = pyglet.resource.image('resources/top_left.png')
-        custom_top_right = pyglet.resource.image('resources/top_right.png')
-        custom_bottom_left = pyglet.resource.image('resources/bottom_left.png')
-        custom_bottom_right = pyglet.resource.image('resources/bottom_right.png')
 
-    class Box(glooey.Bin):
-        custom_right_padding = 8
-        custom_top_padding = 0
-        custom_left_padding = 0
-        custom_bottom_padding = 8
 
-    class NodeTitle(glooey.Label):
-        custom_font_name = "Open Sans SemiBold"
-        custom_font_size = 10
-        custom_alignment = 'center'
