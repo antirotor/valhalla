@@ -6,6 +6,9 @@ from pprint import pprint
 
 
 class DefaultNode(AbstractNode):
+    """
+    Default node is node from every other node should inherit.
+    """
 
     def disable_evaluation(self):
         pass
@@ -16,7 +19,7 @@ class DefaultNode(AbstractNode):
     def __init__(self, graph, name):
         super().__init__()
         self._graph = graph
-        self._node = DefaultNodeWidget(graph, name)
+        self._node = DefaultNodeWidget(graph, name, self)
         self._initialize_port_widgets()
         self._graph.addNode(self._node)
 
@@ -28,25 +31,22 @@ class DefaultNode(AbstractNode):
         return "79b4a290-ea03-436a-9518-c176081aa40e"
 
     def get_category(self):
-        pass
+        return self._category
 
     def _initialize_port_widgets(self):
         for ip in self._ports["input"]:
-            print("-" * 80)
-            pprint(ip)
             color = tuple(int(ip['color'].lstrip('#')[i:i+2], 16) for i in (0, 2, 4))
-            print('adding {}'.format(ip['type']))
             self._node.addPort(InputPort(self._node, self._graph, ip['type'], QtGui.QColor(*color), ip['type']))
 
         for op in self._ports["output"]:
-            print("-" * 80)
-            pprint(op)
             color = tuple(int(op['color'].lstrip('#')[i:i + 2], 16) for i in (0, 2, 4))
             self._node.addPort(OutputPort(self._node, self._graph, op['type'], QtGui.QColor(*color), op['type']))
 
-
     def evaluate(self):
         pass
+
+    def set_color(self, color):
+        self._node.setColor(QtGui.QColor(*color))
 
 
 
