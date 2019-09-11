@@ -11,7 +11,7 @@ Contribution is welcomed even if it is just good idea and no code
 Basic Architecture Ideas
 ------------------------
 
-- Visual graph editor using Qt5 ([pyflowgraph](https://github.com/EricTRocks/pyflowgraph)).
+- Visual graph editor using Qt5 ([NodeGraphQt](https://github.com/jchanvfx/NodeGraphQt)).
   Final feel should be as now dead **Softimage ICE**, possibly **Blueprints** in **UE4**.
   Basic nodes for operator, primitive data and execution flow will be built in. Custom python scripts
   will extended `DefaultNode` specify data they need and data they provide and will be treated as plugins.
