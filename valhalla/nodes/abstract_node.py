@@ -6,9 +6,11 @@ import os
 import uuid
 from pprint import pprint
 
+from NodeGraphQt import BaseNode
+
 
 @autoprop
-class AbstractNode(ABC):
+class AbstractNode(ABC, BaseNode):
     """
     This is abstract class serving as a base for all nodes. It sets all basic node geometry options and
     load port types, etc. Node can then be implemented by whatever UI libs. Creating widget node and rendering
@@ -18,47 +20,31 @@ class AbstractNode(ABC):
     _category = "System :: Default"
 
     # Ports
-    _inputs = [
+    port_inputs = [
         {"type": "float", "name": "float in"}
     ]
-    _outputs = [
+    port_outputs = [
         {"type": "float", "name": "float out"}
     ]
     _ports = {"input": [], "output": []}
 
     def __init__(self):
 
+        super(AbstractNode, self).__init__()
         # Metadata
         self._name = "default"
         self._category = "System :: Default"
 
         # Ports
-        self._inputs = [
+        self.port_inputs = [
             {"type": "float", "name": "float in"}
         ]
-        self._outputs = [
+        self.port_outputs = [
             {"type": "float", "name": "float out"}
         ]
         self._ports = {"input": [], "output": []}
 
         self._process_ports()
-        super().__init__()
-
-    @property
-    @abstractmethod
-    def id(self):
-        """
-        Every node should have its own unique **UUID4**
-        :return: uuid of the node
-        :rtype: str
-        """
-        return "55349bfb-b3e1-4786-9b9a-eb7c49be6198"
-
-    def get_name(self):
-        return self._name
-
-    def set_name(self, name):
-        self._name = name
 
     @lru_cache(maxsize=32)
     def _get_type_root(self, type_name):
@@ -79,20 +65,20 @@ class AbstractNode(ABC):
         Load all ports defined for node in `self.inputs` and `self._outputs`, create their uuids and
         fill in data found in their respective xml definitions.
         """
-        # iterate over _inputs and outputs, load type definitions from xml
+        # iterate over port_inputs and port_outputs, load type definitions from xml
         ns = {"valhalla": "http://www.valhalla.site/types"}
-        for i in self._inputs:
+        for i in self.port_inputs:
             port_type = self._get_type_root(i.get("type"))
-            self._ports["input"].append({"uuid": uuid.uuid4(),
+            self._ports["input"].append({"uuid": str(uuid.uuid4()),
                                          "type": port_type.findall("valhalla:name", ns)[0].text,
                                          "map": port_type.findall("valhalla:map", ns)[0].text,
                                          "color": port_type.findall("valhalla:color", ns)[0].text,
                                          "description": port_type.findall("valhalla:description", ns)[0].text,
                                          "connections": []})
             pass
-        for o in self._outputs:
+        for o in self.port_outputs:
             port_type = self._get_type_root(o.get("type"))
-            self._ports["output"].append({"uuid": uuid.uuid4(),
+            self._ports["output"].append({"uuid": str(uuid.uuid4()),
                                           "type": port_type.findall("valhalla:name", ns)[0].text,
                                           "map": port_type.findall("valhalla:map", ns)[0].text,
                                           "color": port_type.findall("valhalla:color", ns)[0].text,
@@ -104,7 +90,6 @@ class AbstractNode(ABC):
     @abstractmethod
     def get_category(self):
         return self._category
-
 
     @abstractmethod
     def evaluate(self):

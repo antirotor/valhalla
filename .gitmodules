@@ -1,0 +1,3 @@
+[submodule "NodeGraphQt"]
+	path = vendor/NodeGraphQt
+	url = https://github.com/jchanvfx/NodeGraphQt.git

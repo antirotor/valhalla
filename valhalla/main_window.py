@@ -16,7 +16,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.graph = GraphView(parent=self.view_widget)
 
         # this is just for testing
-        node1 = DefaultNode(self.graph, 'test1')
+        node1 = DefaultNode()
         node1.set_position(-150, 0)
         self._nodes['test1'] = node1
 

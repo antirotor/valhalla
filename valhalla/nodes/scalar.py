@@ -7,10 +7,10 @@ class ScalarNode(DefaultNode):
     _color = (24, 200, 24)
 
     # Ports
-    _inputs = [
+    port_inputs = [
         {"type": "float", "name": "float in"}
     ]
-    _outputs = [
+    port_outputs = [
         {"type": "float", "name": "float out"}
     ]
 
@@ -19,5 +19,5 @@ class ScalarNode(DefaultNode):
         self.set_color(self._color)
 
     @property
-    def id(self):
+    def node_id(self):
         return "1b5c7be1-fa9d-4cb7-962f-0433b66c2569"

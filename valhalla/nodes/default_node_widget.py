@@ -1,4 +1,4 @@
-from pyflowgraph.node import Node
+from NodeGraphQt import NodeGraph, BaseNode, BackdropNode, setup_context_menu
 import autoprop
 from Qt import QtGui, QtWidgets
 from ..node_properties import PropertiesWindow
@@ -6,7 +6,7 @@ import uuid
 
 
 @autoprop
-class DefaultNodeWidget(Node):
+class DefaultNodeWidget(BaseNode):
 
     _properties = None
 
