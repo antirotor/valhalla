@@ -3,5 +3,5 @@
     <valhalla:name>float</valhalla:name>
     <valhalla:description>Single float number</valhalla:description>
     <valhalla:map>float</valhalla:map>
-    <valhalla:color>#2045cc</valhalla:color>
+    <valhalla:color>#20cc45</valhalla:color>
 </valhalla:type>

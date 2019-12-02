@@ -1,6 +1,5 @@
-import sys
-from PyQt5 import QtCore, QtWidgets
-from .nodes.default_node import DefaultNode
+from PyQt5 import QtWidgets
+from valhalla.default_node import DefaultNode
 from .nodes.scalar import ScalarNode
 
 from pyflowgraph.graph_view import GraphView

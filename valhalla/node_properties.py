@@ -10,6 +10,7 @@ class TableWidgetHeaderItem(QtWidgets.QTableWidgetItem):
         self.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
         self.setBackground(QtGui.QColor(230, 230, 230))
 
+
 class PropertiesWindow(QtWidgets.QWidget):
     """
     This defines node properties window. Input ports that are not connected and are of some

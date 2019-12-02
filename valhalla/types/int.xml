@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<valhalla:type xmlns:valhalla="http://www.valhalla.site/types">
+    <valhalla:name>int</valhalla:name>
+    <valhalla:description>Single integer number</valhalla:description>
+    <valhalla:map>int</valhalla:map>
+    <valhalla:color>#2045cc</valhalla:color>
+</valhalla:type>
