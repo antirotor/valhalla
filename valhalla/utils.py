@@ -1,6 +1,7 @@
 """
-This is heavily inspired by Pyblish way of discovering plugins. Currently simplified. I think this needs to be
-changed completely, not because Pyblish way is wrong but because I think Valhalla will need more robust way to add
+This is heavily inspired by Pyblish way of discovering plugins. Currently
+simplified. I think this needs to be changed completely, not because Pyblish
+way is wrong but because I think Valhalla will need more robust way to add
 plugins, not just as files ...
 """
 
@@ -9,6 +10,8 @@ import sys
 import types
 import inspect
 from .default_node import DefaultNode
+import xml.etree.ElementTree as ET
+from functools import lru_cache
 
 from . import (
     _registered_node_paths,
@@ -63,7 +66,8 @@ def discover_nodes():
 
                 sys.modules[absolute_path] = module
             except Exception as e:
-                print("  * skipped [{node}] - {err}".format(node=node_name, err=e))
+                print("  * skipped [{node}] - {err}".format(node=node_name,
+                                                            err=e))
                 continue
 
             for node in _find_nodes_in_module(module):
@@ -80,4 +84,28 @@ def discover_nodes():
     return nodes
 
 
+@lru_cache(maxsize=32)
+def get_type_info(type_name):
+    """
+    This will load xml file defined by `type_name` and return
+    its xml root node.
 
+    :param type_name: name of type
+    :return: type node root element
+    """
+    ns = {"valhalla": "http://www.valhalla.site/types"}
+    package_directory = os.path.abspath(
+        os.path.dirname(os.path.abspath(__file__)))
+    xml_file = os.path.join(
+        package_directory, 'types', '{}.xml'.format(type_name))
+    tree = ET.parse(xml_file)
+    port_type = tree.getroot()
+
+    type_info = {
+        "type": port_type.findall("valhalla:name", ns)[0].text,
+        "map": port_type.findall("valhalla:map", ns)[0].text,
+        "color": port_type.findall("valhalla:color", ns)[0].text,
+        "description": port_type.findall("valhalla:description", ns)[0].text
+    }
+
+    return type_info

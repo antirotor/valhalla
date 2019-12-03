@@ -20,7 +20,8 @@ class IntegerValue(DefaultNode):
 
     def __init__(self):
         super(IntegerValue, self).__init__()
-        self._value_port = self.add_text_input("value", "Integer value", str(self._value))
+        self._value_port = self.add_text_input(
+            "value", "Integer value", str(self._value))
         self.set_color(*self.color)
 
     @property
@@ -50,10 +51,10 @@ class ScalarNode(DefaultNode):
 
     def __init__(self):
         super(ScalarNode, self).__init__()
-        self._value_port = self.add_text_input("value", "Scalar value", str(self._value))
+        self._value_port = self.add_text_input(
+            "value", "Scalar value", str(self._value))
         self.set_color(*self.color)
 
     @property
     def node_id(self):
         return "1b5c7be1-fa9d-4cb7-962f-0433b66c2569"
-
