@@ -29,6 +29,16 @@ class IntegerValue(DefaultNode):
         return "d91d3615-c696-41cb-9d60-31f88bbed9a9"
 
     def _do_evaluate(self):
+        inputs = self.inputs()
+        for input_name, port in inputs.items():
+            connected = port.connected_ports()
+            if connected.len() < 1:
+                # no ports are connected
+                continue
+            for connected_port in connected:
+                connected_node = connected_port.node()
+                connected_node.evaluate()
+
         return
 
 

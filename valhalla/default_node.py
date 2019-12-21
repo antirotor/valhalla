@@ -1,5 +1,5 @@
 from .abstract_node import AbstractNode
-
+import errors
 
 class DefaultNode(AbstractNode):
     """
@@ -25,12 +25,12 @@ class DefaultNode(AbstractNode):
     def _do_evaluate(self):
         pass
 
-    def evaluate(self):
-        if not self._evaluate:
-            return
-
+    def _gather_input_values(self):
         for available_port in self._ports["in"]:
             connected_ports = available_port["port_instance"].connected_ports()
+            if connected_ports.len() < 1:
+                # no ports are connected
+                continue
             if not connected_ports:
                 pass
             if len(connected_ports) != 1:
@@ -40,4 +40,19 @@ class DefaultNode(AbstractNode):
 
             connected_port = connected_ports[0]
 
-            result = connected_ports.node().evaluate()
+            try:
+                available_port["value"] = connected_port.node().evaluate()[connected_port]
+            except errors.NodeEvaluationError as e:
+                print("!!! {}: {}".format(connected_port.node(), e))
+
+    def evaluate(self):
+        if self.disabled():
+            return
+
+        self._gather_input_values()
+        self._do_evaluate()
+        results = dict()
+        for out_port in self._ports["out"]:
+            results[out_port["port_instance"]] = out_port["value"]
+
+        return results
