@@ -44,7 +44,7 @@ setup(name='valhalla',
         "console_scripts": ["valhalla = valhalla.app:main"]
       },
       install_requires=[
-          'pyflowgraph @ git+https://git@github.com/antirotor/pyflowgraph'
+          'NodeGraphQt @ git+https://github.com/jchanvfx/NodeGraphQt.git'
           "autoprop"
       ],
       extra_require={

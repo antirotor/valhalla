@@ -1,0 +1,2 @@
+class NodeEvaluationError(Exception):
+    pass
