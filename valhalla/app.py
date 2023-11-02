@@ -1,8 +1,8 @@
 import sys
 import os
 
-from NodeGraphQt import QtWidgets, QtCore
-from NodeGraphQt import NodeGraph, setup_context_menu, PropertiesBinWidget
+from qtpy import QtWidgets, QtCore
+from NodeGraphQt import NodeGraph, PropertiesBinWidget
 from NodeGraphQt import Port
 
 from .utils import register_node_path, discover_nodes, get_type_info
@@ -30,7 +30,7 @@ def run():
     print('>>> running')
     app = QtWidgets.QApplication(sys.argv)
     graph = NodeGraph()
-    setup_context_menu(graph)
+    # graph.set_context_menu()
 
     register_node_path(os.path.join(_get_package_path(), "nodes"))
     _registered_nodes = discover_nodes()
@@ -38,6 +38,10 @@ def run():
     for node in _registered_nodes:
         graph.register_node(node)
     # graph.register_node(BackdropNode)
+
+    print(graph.registered_nodes())
+    test_node1 = graph.create_node('net.annatar.IntegerValue')
+    test_node2 = graph.create_node('net.annatar.Integer2Float')
 
     properties_bin = PropertiesBinWidget(node_graph=graph)
     properties_bin.setWindowFlags(QtCore.Qt.Tool)

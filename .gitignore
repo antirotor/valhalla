@@ -125,3 +125,6 @@ dmypy.json
 
 # Idea IDE
 .idea
+
+# local poetry
+.poetry

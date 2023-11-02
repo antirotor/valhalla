@@ -1,5 +1,5 @@
 from .abstract_node import AbstractNode
-import errors
+from .errors import NodeEvaluationError
 
 class DefaultNode(AbstractNode):
     """
