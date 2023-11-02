@@ -8,7 +8,6 @@ from pprint import pprint
 
 from NodeGraphQt import BaseNode, Port
 from NodeGraphQt.errors import PortRegistrationError
-from NodeGraphQt.constants import IN_PORT, OUT_PORT
 
 from .port import TypedPort
 
@@ -151,7 +150,7 @@ class AbstractNode(ABC, BaseNode):
             view.color = color
             view.border_color = [min([255, max([0, i + 80])]) for i in color]
         port = TypedPort(self, view, port_type=port_type)
-        port.model.type_ = IN_PORT
+        port.model.type_ = "net.annatar.IntegerValue"
         port.model.name = name
         port.model.display_name = display_name
         port.model.multi_connection = multi_input
@@ -182,7 +181,7 @@ class AbstractNode(ABC, BaseNode):
             view.color = color
             view.border_color = [min([255, max([0, i + 80])]) for i in color]
         port = TypedPort(self, view, port_type=port_type)
-        port.model.type_ = OUT_PORT
+        port.model.type_ = "net.annatar.IntegerValue"
         port.model.name = name
         port.model.display_name = display_name
         port.model.multi_connection = multi_output
